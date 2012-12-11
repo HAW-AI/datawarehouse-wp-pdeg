@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
@@ -40,11 +40,11 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jPanel3" max="32767" attributes="0"/>
+                      <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jPanel2" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPanel1" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -119,7 +119,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jScrollPane1" alignment="0" pref="427" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -161,10 +161,24 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jCoBFiliale" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCoBDatum" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCoBVerkaeufer" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jCoBDatum" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCoBVerkaeufer" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jCBKunde" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCBArtikel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jCoBArtikel" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCoBKunde" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="463" max="32767" attributes="0"/>
+                  <EmptySpace pref="291" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -175,18 +189,22 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jCBDatum" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jCoBDatum" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCBArtikel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCoBArtikel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jCBVerkaeufer" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jCoBVerkaeufer" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCBKunde" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCoBKunde" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jCBFiliale" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jCoBFiliale" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="60" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -232,6 +250,40 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jCoBFiliale">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="4">
+                <StringItem index="0" value="Item 1"/>
+                <StringItem index="1" value="Item 2"/>
+                <StringItem index="2" value="Item 3"/>
+                <StringItem index="3" value="Item 4"/>
+              </StringArray>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jCBArtikel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Artikel"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="jCoBArtikel">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="4">
+                <StringItem index="0" value="Item 1"/>
+                <StringItem index="1" value="Item 2"/>
+                <StringItem index="2" value="Item 3"/>
+                <StringItem index="3" value="Item 4"/>
+              </StringArray>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jCBKunde">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Kunde"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="jCoBKunde">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
@@ -291,7 +343,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTFUrl">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jdbc:oracle:thin:@ora5:1521:inf09"/>
+            <Property name="text" type="java.lang.String" value="jdbc:oracle:thin:@ora5.informatik.haw-hamburg.de:1521:inf09"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTFUser">
@@ -300,9 +352,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="jPFPassword">
-          <Properties>
-            <Property name="text" type="java.lang.String" value=""/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jBtnConnect">
           <Properties>

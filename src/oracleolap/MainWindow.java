@@ -1,14 +1,15 @@
 package oracleolap;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,54 +18,58 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    private Connection connection = null;
+	private Connection connection = null;
+	private HashMap<String, Integer> map = new HashMap<String, Integer>();
 
-    /** Creates new form MainWindow */
-    public MainWindow() {
-        initComponents();
-        makeJList();
-    }
-    // <editor-fold defaultstate="collapsed" desc="Attribute">  
+	/**
+	 * Creates new form MainWindow
+	 */
+	public MainWindow() {
+		initComponents();
+		makeJList();
+	}
+	// <editor-fold defaultstate="collapsed" desc="Attribute">
 
-    private void makeJList() {
-        DefaultListModel<AttributInfo> listModel = new DefaultListModel<AttributInfo>();
-        listModel.addElement(new AttributInfo("Artikelname", "ARTIKEL", "ARTNAME"));
-        listModel.addElement(new AttributInfo("Gruppenname", "ARTIKEL", "GRPNAME"));
-        listModel.addElement(new AttributInfo("Jahr", "DATUM", "JAHR"));
-        listModel.addElement(new AttributInfo("Monat", "DATUM", "MONAT"));
-        listModel.addElement(new AttributInfo("Tag", "DATUM", "TAG"));
-        listModel.addElement(new AttributInfo("Filiale", "FILIALE", "NAME"));
-        listModel.addElement(new AttributInfo("Kunde", "KUNDEN", "NAME"));
-        listModel.addElement(new AttributInfo("Verkäufer", "VERKAEUFER", "NAME"));
-        listModel.addElement(new AttributInfo("Preis", "BONDATEN", "PREIS"));
-        listModel.addElement(new AttributInfo("Anzahl", "BONDATEN", "ANZAHL"));
-        jLAttribute.setModel(listModel);
-        jLSelected.setModel(new DefaultListModel<AttributInfo>());
-    }
-    // </editor-fold>
+	private void makeJList() {
+		DefaultListModel<AttributInfo> listModel = new DefaultListModel<AttributInfo>();
+		listModel.addElement(new AttributInfo("Artikelname", "ARTIKEL", "ARTNAME"));
+		listModel.addElement(new AttributInfo("Gruppenname", "ARTIKEL", "GRPNAME"));
+		listModel.addElement(new AttributInfo("Jahr", "DATUM", "JAHR"));
+		listModel.addElement(new AttributInfo("Monat", "DATUM", "MONAT"));
+		listModel.addElement(new AttributInfo("Tag", "DATUM", "TAG"));
+		listModel.addElement(new AttributInfo("Filiale", "FILIALE", "NAME"));
+		listModel.addElement(new AttributInfo("Kunde", "KUNDEN", "NAME"));
+		listModel.addElement(new AttributInfo("Verkäufer", "VERKAEUFER", "NAME"));
+//		listModel.addElement(new AttributInfo("Preis", "BONDATEN", "PREIS"));
+//		listModel.addElement(new AttributInfo("Anzahl", "BONDATEN", "ANZAHL"));
+		jLAttribute.setModel(listModel);
+		jLSelected.setModel(new DefaultListModel<AttributInfo>());
+	}
+	// </editor-fold>
 
-    private void moveElement(JList<AttributInfo> list1, JList<AttributInfo> list2) {
-        AttributInfo element = (AttributInfo) list1.getSelectedValue();
-        ((DefaultListModel<AttributInfo>) list2.getModel()).addElement(element);
-        ((DefaultListModel<AttributInfo>) list1.getModel()).removeElement(element);
-    }
+	private void moveElement(JList<AttributInfo> list1, JList<AttributInfo> list2) {
+		AttributInfo element = (AttributInfo) list1.getSelectedValue();
+		((DefaultListModel<AttributInfo>) list2.getModel()).addElement(element);
+		((DefaultListModel<AttributInfo>) list1.getModel()).removeElement(element);
+	}
 
-    private String makeSelectFields() {
-        DefaultListModel<AttributInfo> listModel = (DefaultListModel<AttributInfo>) jLSelected.getModel();
-        String fields = "";
-        for (int i = 0; i < listModel.getSize(); i++) {
-            fields += (!fields.isEmpty() ? ", " : "") + listModel.getElementAt(i).toField();
-        }
-        return fields;
-    }
+	private String makeSelectFields() {
+		DefaultListModel<AttributInfo> listModel = (DefaultListModel<AttributInfo>) jLSelected.getModel();
+		String fields = "";
+		for (int i = 0; i < listModel.getSize(); i++) {
+			fields += (!fields.isEmpty() ? ", " : "") + listModel.getElementAt(i).toField();
+//			fields += listModel.getElementAt(i).toField() + ", ";
+		}
+		return fields;
+	}
 
-    private String makeWhereClausel() {
-        String where = "";
+	private String makeWhereClausel() {
+		String where = "";
 
-        return where;
-    }
+		return where;
+	}
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -83,6 +88,10 @@ public class MainWindow extends javax.swing.JFrame {
         jCoBDatum = new javax.swing.JComboBox();
         jCoBVerkaeufer = new javax.swing.JComboBox();
         jCoBFiliale = new javax.swing.JComboBox();
+        jCBArtikel = new javax.swing.JCheckBox();
+        jCoBArtikel = new javax.swing.JComboBox();
+        jCBKunde = new javax.swing.JCheckBox();
+        jCoBKunde = new javax.swing.JComboBox();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTFUrl = new javax.swing.JTextField();
@@ -149,7 +158,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
 
         jCBDatum.setText("Datum");
@@ -164,6 +173,14 @@ public class MainWindow extends javax.swing.JFrame {
 
         jCoBFiliale.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jCBArtikel.setText("Artikel");
+
+        jCoBArtikel.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jCBKunde.setText("Kunde");
+
+        jCoBKunde.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -176,9 +193,19 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCoBFiliale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCoBDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCoBVerkaeufer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(463, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCoBDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCoBVerkaeufer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCBKunde)
+                            .addComponent(jCBArtikel))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCoBArtikel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCoBKunde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(291, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,25 +213,27 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCBDatum)
-                    .addComponent(jCoBDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCoBDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCBArtikel)
+                    .addComponent(jCoBArtikel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCBVerkaeufer)
-                    .addComponent(jCoBVerkaeufer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCoBVerkaeufer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCBKunde)
+                    .addComponent(jCoBKunde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCBFiliale)
                     .addComponent(jCoBFiliale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel1.setText("ODBC Url:");
 
-        jTFUrl.setText("jdbc:oracle:thin:@ora5:1521:inf09");
+        jTFUrl.setText("jdbc:oracle:thin:@ora5.informatik.haw-hamburg.de:1521:inf09");
 
         jTFUser.setText("abb703");
-
-        jPFPassword.setText("s@$vgn6$3!t6mc7");
 
         jBtnConnect.setText("Verbinden");
         jBtnConnect.addActionListener(new java.awt.event.ActionListener() {
@@ -270,114 +299,146 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+	private DefaultComboBoxModel<String> makeComboBoxModel(ResultSet res) throws SQLException {
+		DefaultComboBoxModel<String> listModel = new DefaultComboBoxModel<String>();
+		while (res.next()) {
+			listModel.addElement(res.getString(1));
+		}
+
+		return listModel;
+	}
+
 private void connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectActionPerformed
-    try {
-        // TODO add your handling code here:
-        Class.forName("oracle.jdbc.OracleDriver");
-        connection = DriverManager.getConnection(jTFUrl.getText(), jTFUser.getText(), new String(jPFPassword.getPassword()));
-    } catch (Exception ex) {
-        Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-    }
+	try {
+		// TODO add your handling code here:
+		Class.forName("oracle.jdbc.OracleDriver");
+		connection = DriverManager.getConnection(jTFUrl.getText(), jTFUser.getText(), new String(jPFPassword.getPassword()));
+
+		// Datum
+		ResultSet res = connection.createStatement().executeQuery("SELECT ID, JAHR, MONAT, TAG FROM DATUM");
+		DefaultComboBoxModel<String> boxModel = new DefaultComboBoxModel<String>();
+		while (res.next()) {
+			int id = res.getInt(1);
+			String name = String.format("%s-%s-%s", res.getString(2), res.getString(3), res.getString(4));
+			map.put(name, id);
+			boxModel.addElement(name);
+		}
+		jCoBDatum.setModel(boxModel);
+
+		jCoBFiliale.setModel(makeComboBoxModel(connection.createStatement()
+				.executeQuery("SELECT \"NAME\" FROM FILIALE")));
+		jCoBVerkaeufer.setModel(makeComboBoxModel(connection.createStatement()
+				.executeQuery("SELECT \"NAME\" FROM VERKAEUFER")));
+		jCoBArtikel.setModel(makeComboBoxModel(connection.createStatement()
+				.executeQuery("SELECT ARTNAME FROM ARTIKEL")));
+		jCoBKunde.setModel(makeComboBoxModel(connection.createStatement()
+				.executeQuery("SELECT \"NAME\" FROM KUNDEN")));
+	} catch (Exception ex) {
+		Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+	}
 }//GEN-LAST:event_connectActionPerformed
 
 private void jBtnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnRefreshActionPerformed
 // TODO add your handling code here:
-    if (connection != null) {
-        DefaultTableModel dtm = new DefaultTableModel();
-        String sql = makeSql();
-        try {
-            ResultSet res = connection.createStatement().executeQuery(sql);
-            ResultSetMetaData metaData = res.getMetaData();
-            int colcnt = metaData.getColumnCount();
-            @SuppressWarnings("UseOfObsoleteCollectionType")
-            Vector<String> columns = new Vector<String>(colcnt);
+	if (connection != null) {
+		DefaultTableModel dtm = new DefaultTableModel();
+		String sql = makeSql();
+		try {
+			ResultSet res = connection.createStatement().executeQuery(sql);
+			ResultSetMetaData metaData = res.getMetaData();
+			int colcnt = metaData.getColumnCount();
+			@SuppressWarnings("UseOfObsoleteCollectionType")
+			Vector<String> columns = new Vector<String>(colcnt);
 
-            // Spaltennamen (Kopf)
-            for (int i = 0; i < colcnt; i++) {
-                columns.add(metaData.getColumnName(i + 1));
-            }
-            @SuppressWarnings("UseOfObsoleteCollectionType")
-            Vector<Vector<String>> tbody = new Vector<Vector<String>>();
-            for (int i = 0; res.next(); i++) {
-                @SuppressWarnings("UseOfObsoleteCollectionType")
-                Vector<String> zeile = new Vector<String>(colcnt);
-                for (int j = 0; j < colcnt; j++) {
-                    zeile.add(res.getString(j + 1));
-                }
-                tbody.add(zeile);
-            }
-            dtm.setDataVector(tbody, columns);
-            jTErgebnisse.setModel(dtm);
-        } catch (SQLException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+			// Spaltennamen (Kopf)
+			for (int i = 0; i < colcnt; i++) {
+				columns.add(metaData.getColumnName(i + 1));
+			}
+			@SuppressWarnings("UseOfObsoleteCollectionType")
+			Vector<Vector<String>> tbody = new Vector<Vector<String>>();
+			for (int i = 0; res.next(); i++) {
+				@SuppressWarnings("UseOfObsoleteCollectionType")
+				Vector<String> zeile = new Vector<String>(colcnt);
+				for (int j = 0; j < colcnt; j++) {
+					zeile.add(res.getString(j + 1));
+				}
+				tbody.add(zeile);
+			}
+			dtm.setDataVector(tbody, columns);
+			jTErgebnisse.setModel(dtm);
+		} catch (SQLException ex) {
+			Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 }//GEN-LAST:event_jBtnRefreshActionPerformed
 
 private void jLAttributeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLAttributeMouseClicked
 // TODO add your handling code here:
-    moveElement(jLAttribute, jLSelected);
+	moveElement(jLAttribute, jLSelected);
 }//GEN-LAST:event_jLAttributeMouseClicked
 
 private void jLSelectedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLSelectedMouseClicked
 // TODO add your handling code here:
-    moveElement(jLSelected, jLAttribute);
+	moveElement(jLSelected, jLAttribute);
 }//GEN-LAST:event_jLSelectedMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String args[]) {
+		/* Set the Nimbus look and feel */
+		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+		 */
+		try {
+			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					javax.swing.UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (ClassNotFoundException ex) {
+			java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (InstantiationException ex) {
+			java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (IllegalAccessException ex) {
+			java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+			java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		}
+		//</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                new MainWindow().setVisible(true);
-            }
-        });
-    }
+		/* Create and display the form */
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new MainWindow().setVisible(true);
+			}
+		});
+	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnConnect;
     private javax.swing.JButton jBtnRefresh;
+    private javax.swing.JCheckBox jCBArtikel;
     private javax.swing.JCheckBox jCBDatum;
     private javax.swing.JCheckBox jCBFiliale;
+    private javax.swing.JCheckBox jCBKunde;
     private javax.swing.JCheckBox jCBVerkaeufer;
+    private javax.swing.JComboBox jCoBArtikel;
     private javax.swing.JComboBox jCoBDatum;
     private javax.swing.JComboBox jCoBFiliale;
+    private javax.swing.JComboBox jCoBKunde;
     private javax.swing.JComboBox jCoBVerkaeufer;
     private javax.swing.JList jLAttribute;
     private javax.swing.JList jLSelected;
@@ -395,13 +456,43 @@ private void jLSelectedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     private javax.swing.JTextField jTFUser;
     // End of variables declaration//GEN-END:variables
 
-    private String makeSql() {
-        String sql = "SELECT %s"
-                + " FROM BONDATEN, ARTIKEL, DATUM, FILIALE, KUNDEN, VERKAEUFER"
-                + " WHERE (BONDATEN.ARTIKEL = ARTIKEL.ARTNR AND BONDATEN.DATUM_ID = DATUM.ID AND BONDATEN.FILIALEN_ID = FILIALE.ID AND BONDATEN.KUNDE = KUNDEN.KUNDENNR AND BONDATEN.VERKAEUFER_ID = VERKAEUFER.ID)"
-                + " AND %s";
-        sql = String.format(sql, makeSelectFields(), " DATUM.ID IN (SELECT ID FROM DATUM WHERE TAG BETWEEN 2 AND 30) AND BONDATEN.FILIALEN_ID = (SELECT ID FROM FILIALE WHERE \"NAME\" = 'A')");
-        System.out.println(sql);
-        return sql;
-    }
+	private String makeSql() {
+		String sql = "SELECT %s SUM(BONDATEN.PREIS) Preis, SUM(BONDATEN.ANZAHL) Anzahl"
+				+ " FROM BONDATEN, ARTIKEL, DATUM, FILIALE, KUNDEN, VERKAEUFER"
+				+ " WHERE (BONDATEN.ARTIKEL = ARTIKEL.ARTNR AND BONDATEN.DATUM_ID = DATUM.ID AND BONDATEN.FILIALEN_ID = FILIALE.ID AND BONDATEN.KUNDE = KUNDEN.KUNDENNR AND BONDATEN.VERKAEUFER_ID = VERKAEUFER.ID)"
+				+ "%s";
+		String where = "";
+
+		if (jCBDatum.isSelected()) {
+			where += String.format(" AND BONDATEN.DATUM_ID = %d", map.get(jCoBDatum.getSelectedItem()));
+		}
+
+		if (jCBArtikel.isSelected()) {
+			where += String.format(" AND ARTIKEL.ARTNAME = '%s'", jCoBArtikel.getSelectedItem().toString());
+		}
+
+		if (jCBFiliale.isSelected()) {
+			where += String.format(" AND FILIALE.\"NAME\" = '%s'", jCoBFiliale.getSelectedItem().toString());
+		}
+
+		if (jCBKunde.isSelected()) {
+			//where += String.format(" AND KUNDEN.\"NAME\" = '%s'", jCoBKunde.getSelectedItem().toString());
+			where += String.format(" AND BONDATEN.KUNDE IN (SELECT KUNDENNR FROM KUNDEN WHERE \"NAME\" = '%s')", jCoBKunde.getSelectedItem().toString());
+		}
+
+		if (jCBVerkaeufer.isSelected()) {
+			where += String.format(" AND VERKAEUFER.\"NAME\" = '%s'", jCoBVerkaeufer.getSelectedItem().toString());
+		}
+
+
+		//sql = String.format(sql, makeSelectFields(), " DATUM.ID IN (SELECT ID FROM DATUM WHERE TAG BETWEEN 2 AND 30) AND BONDATEN.FILIALEN_ID = (SELECT ID FROM FILIALE WHERE \"NAME\" = 'A')");
+		String fiels = makeSelectFields();
+		if (fiels.isEmpty()) {
+			sql = String.format(sql, fiels, where);
+		} else {
+			sql = String.format(sql, fiels + ", ", where + " GROUP BY (" + fiels + ")");
+		}
+		System.out.println(sql);
+		return sql;
+	}
 }
