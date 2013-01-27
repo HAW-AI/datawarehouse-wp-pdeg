@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -324,6 +322,10 @@ private void connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 		Class.forName("oracle.jdbc.OracleDriver");
 		connection = DriverManager.getConnection(jTFUrl.getText(), jTFUser.getText(), new String(jPFPassword.getPassword()));
 
+
+		// Schema
+		connection.createStatement().executeQuery("ALTER SESSION SET CURRENT_SCHEMA = abb703");
+
 		// Datum
 		ResultSet res = connection.createStatement().executeQuery("SELECT ID, JAHR, MONAT, TAG FROM DATUM");
 		DefaultComboBoxModel<String> boxModel = new DefaultComboBoxModel<String>();
@@ -464,7 +466,7 @@ private void jLSelectedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 		String where = "";
 
 		if (jCBDatum.isSelected()) {
-			where += String.format(" AND BONDATEN.DATUM_ID = %d", map.get(jCoBDatum.getSelectedItem()));
+			where += String.format(" AND BONDATEN.DATUM_ID = %d", map.get((String) jCoBDatum.getSelectedItem()));
 		}
 
 		if (jCBArtikel.isSelected()) {
